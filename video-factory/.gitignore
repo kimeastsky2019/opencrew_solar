@@ -1,0 +1,4 @@
+h3-video/system-ca.pem
+h3-video/output/*
+!h3-video/output/.gitkeep
+.DS_Store

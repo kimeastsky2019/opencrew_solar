@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>H3 스튜디오</title>
+<style>
+:root{--bg:#F4F6F6;--surface:#FFFFFF;--ink:#14191A;--muted:#5A6668;--line:#D8DEDF;--accent:#0B727B;--accent-soft:#DDEEEF;--warm:#A8620A;--warm-soft:#F6EAD8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1415;--surface:#171F21;--ink:#E3EAEA;--muted:#93A3A5;--line:#2B3739;--accent:#4FC2C8;--accent-soft:#183739;--warm:#E3A64B;--warm-soft:#3A2C17}}
+:root[data-theme="dark"]{--bg:#0F1415;--surface:#171F21;--ink:#E3EAEA;--muted:#93A3A5;--line:#2B3739;--accent:#4FC2C8;--accent-soft:#183739;--warm:#E3A64B;--warm-soft:#3A2C17}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;padding:40px 16px 80px;word-break:keep-all}
+.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+h1{margin:0;font-size:30px;letter-spacing:-.01em}
+h2{margin:0 0 12px;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+p{margin:0}
+.lede{color:var(--muted);margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+a.card{display:flex;flex-direction:column;gap:2px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;color:inherit;text-decoration:none;transition:border-color .15s}
+a.card:hover{border-color:var(--accent)}
+a.card b{font-size:15px}
+a.card span{font-size:13px;color:var(--muted)}
+a.card.main{border-color:var(--accent);background:var(--accent-soft)}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;counter-reset:s;list-style:none;margin:0;padding:0}
+.flow li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:14px;counter-increment:s}
+.flow li::before{content:counter(s);display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--surface);font-size:12px;font-weight:600;text-align:center;line-height:22px;margin-bottom:8px}
+.flow b{display:block}
+pre{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font:13px/1.7 ui-monospace,Menlo,monospace}
+.note{background:var(--warm-soft);color:var(--ink);border-radius:8px;padding:14px 16px;font-size:14px}
+.note b{color:var(--warm)}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>H3 스튜디오</h1>
+  <p class="lede">M6_A에서 MiniMax H3로 소리 있는 쇼츠를 만들고, 오픈클로로 자동화하는 데 필요한 링크를 모았습니다.</p>
+</header>
+
+<section>
+  <h2>자주 여는 곳</h2>
+  <div class="grid">
+    <a class="card main" href="http://127.0.0.1:18789/"><b>오픈클로 대시보드</b><span>채팅·스킬·예약 작업 관리 (온보딩 후 열림)</span></a>
+    <a class="card main" href="file:///Users/M6_A/h3-video/output/"><b>완성된 영상 폴더</b><span>~/h3-video/output</span></a>
+    <a class="card" href="file:///Users/M6_A/h3-video/prompts/queue/"><b>대기열 폴더</b><span>여기 넣은 프롬프트를 일괄 생성</span></a>
+    <a class="card" href="https://platform.minimax.io"><b>MiniMax 콘솔</b><span>잔액 충전 · API 키 · 사용 내역</span></a>
+  </div>
+</section>
+
+<section>
+  <h2>영상 만들기</h2>
+  <div class="grid">
+    <a class="card" href="https://hailuoai.video"><b>Hailuo AI</b><span>MiniMax 공식 웹 서비스</span></a>
+    <a class="card" href="https://multimodalart-minimax-h3.hf.space"><b>무료 체험 (일반)</b><span>Hugging Face · 키 없이 테스트</span></a>
+    <a class="card" href="https://huggingface.co/spaces/mrfakename/minimax-h3-ultra-fast"><b>무료 체험 (빠른 버전)</b><span>Hugging Face</span></a>
+    <a class="card" href="https://claude.ai/artifact/79mAyxU3DPGdfLHvteL1RB"><b>BRICO 쇼츠 팩토리</b><span>제작 전략 문서</span></a>
+  </div>
+</section>
+
+<section>
+  <h2>문서</h2>
+  <div class="grid">
+    <a class="card" href="https://platform.minimax.io/docs/guides/video-generation"><b>H3 API 가이드</b><span>모드 · 입력 제한 · 예제</span></a>
+    <a class="card" href="https://platform.minimax.io/docs/api-reference/video-generation-v2-create"><b>H3 API 레퍼런스</b><span>비율 · 길이 · 해상도 값</span></a>
+    <a class="card" href="https://github.com/MiniMax-AI/MiniMax-H3"><b>H3 GitHub</b><span>프롬프트 스킬 원본</span></a>
+    <a class="card" href="https://huggingface.co/MiniMaxAI/MiniMax-H3"><b>H3 모델 페이지</b><span>사양 · 샘플 영상</span></a>
+    <a class="card" href="https://docs.openclaw.ai"><b>오픈클로 문서</b><span>설치 · 스킬 · 채널 연결</span></a>
+    <a class="card" href="https://docs.openclaw.ai/tools/skills"><b>오픈클로 스킬</b><span>스킬 위치와 우선순위</span></a>
+    <a class="card" href="https://lazyowen.com/guides/minimaxh3"><b>H3 입문 가이드</b><span>게으른 빌더</span></a>
+    <a class="card" href="file:///Users/M6_A/h3-video/README.md"><b>스크립트 설명서</b><span>~/h3-video/README.md</span></a>
+  </div>
+</section>
+
+<section>
+  <h2>오픈클로로 쓰는 순서</h2>
+  <ol class="flow">
+    <li><b>장면을 말한다</b>“태블릿 보는 어머니 컷 H3로 만들어 줘”</li>
+    <li><b>프롬프트 작성</b>h3-prompt-writing 스킬이 화면·카메라·소리를 정리</li>
+    <li><b>무료 미리보기</b>보낼 내용과 설정을 확인</li>
+    <li><b>승인</b>“응, 만들어” 해야 요금이 나가는 생성 시작</li>
+    <li><b>저장·보고</b>output 폴더에 mp4 저장, 경로 알림</li>
+  </ol>
+</section>
+
+<section>
+  <h2>터미널 명령</h2>
+<pre># 한 편 만들기 (요금 발생)
+cd ~/h3-video && python3 h3_video.py prompts/coffee.txt
+
+# 보낼 내용만 확인 (무료)
+python3 h3_video.py prompts/coffee.txt --dry-run
+
+# 대기열에서 최대 3편 생성
+python3 h3_video.py --queue --max-jobs 3
+
+# 오픈클로 상태 확인 · 대시보드 열기
+openclaw gateway status
+openclaw dashboard</pre>
+</section>
+
+<p class="note"><b>규칙</b> H3 프롬프트에는 화면 속 글자(간판, 서류, UI, 자막)를 넣지 않습니다. 한글이 깨지기 때문에 글자는 나중에 Remotion으로 합성합니다.</p>
+
+<footer>~/h3-video/hub.html · 바탕화면의 “H3 스튜디오” 바로가기로 열 수 있습니다.</footer>
+</div>
+</body>
+</html>

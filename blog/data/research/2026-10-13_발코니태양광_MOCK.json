@@ -1,0 +1,199 @@
+{
+  "seed": "발코니 태양광",
+  "measured_on": "2026-10-13",
+  "mock": true,
+  "rows": [
+    {
+      "keyword": "베란다 태양광",
+      "monthly_search": 2900,
+      "blog_docs": 4100,
+      "recent_30d": 60,
+      "ratio": 0.71,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 보조금",
+      "monthly_search": 1300,
+      "blog_docs": 1500,
+      "recent_30d": 40,
+      "ratio": 0.87,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "발코니 태양광",
+      "monthly_search": 640,
+      "blog_docs": 820,
+      "recent_30d": 15,
+      "ratio": 0.78,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 설치비용",
+      "monthly_search": 520,
+      "blog_docs": 610,
+      "recent_30d": 12,
+      "ratio": 0.85,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 단점",
+      "monthly_search": 420,
+      "blog_docs": 500,
+      "recent_30d": 9,
+      "ratio": 0.84,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 전기요금",
+      "monthly_search": 310,
+      "blog_docs": 380,
+      "recent_30d": 8,
+      "ratio": 0.82,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "탄소중립포인트 베란다 태양광",
+      "monthly_search": 260,
+      "blog_docs": 180,
+      "recent_30d": 30,
+      "ratio": 1.44,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "미니태양광 발전량",
+      "monthly_search": 240,
+      "blog_docs": 260,
+      "recent_30d": 5,
+      "ratio": 0.92,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "노원구 미니태양광",
+      "monthly_search": 210,
+      "blog_docs": 240,
+      "recent_30d": 6,
+      "ratio": 0.88,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 방향",
+      "monthly_search": 150,
+      "blog_docs": 170,
+      "recent_30d": 3,
+      "ratio": 0.88,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 거치대",
+      "monthly_search": 130,
+      "blog_docs": 160,
+      "recent_30d": 4,
+      "ratio": 0.81,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "미니태양광 자부담",
+      "monthly_search": 120,
+      "blog_docs": 140,
+      "recent_30d": 3,
+      "ratio": 0.86,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 태풍",
+      "monthly_search": 110,
+      "blog_docs": 130,
+      "recent_30d": 3,
+      "ratio": 0.85,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 이사",
+      "monthly_search": 100,
+      "blog_docs": 90,
+      "recent_30d": 2,
+      "ratio": 1.11,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 세입자",
+      "monthly_search": 90,
+      "blog_docs": 70,
+      "recent_30d": 2,
+      "ratio": 1.29,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 철거",
+      "monthly_search": 80,
+      "blog_docs": 60,
+      "recent_30d": 1,
+      "ratio": 1.33,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "발코니 태양광 독일",
+      "monthly_search": 70,
+      "blog_docs": 85,
+      "recent_30d": 1,
+      "ratio": 0.82,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "베란다 태양광 청소",
+      "monthly_search": 40,
+      "blog_docs": 30,
+      "recent_30d": 1,
+      "ratio": 1.33,
+      "verdict": "최적"
+    },
+    {
+      "keyword": "미니태양광 신청",
+      "monthly_search": 380,
+      "blog_docs": 700,
+      "recent_30d": 10,
+      "ratio": 0.54,
+      "verdict": "가능"
+    },
+    {
+      "keyword": "미니태양광",
+      "monthly_search": 1800,
+      "blog_docs": 5200,
+      "recent_30d": 30,
+      "ratio": 0.35,
+      "verdict": "어려움"
+    },
+    {
+      "keyword": "아파트 베란다 태양광",
+      "monthly_search": 880,
+      "blog_docs": 2300,
+      "recent_30d": 20,
+      "ratio": 0.38,
+      "verdict": "어려움"
+    },
+    {
+      "keyword": "베란다 태양광 후기",
+      "monthly_search": 600,
+      "blog_docs": 2600,
+      "recent_30d": 25,
+      "ratio": 0.23,
+      "verdict": "포화"
+    },
+    {
+      "keyword": "베란다 태양광 효율",
+      "monthly_search": 170,
+      "blog_docs": 900,
+      "recent_30d": 4,
+      "ratio": 0.19,
+      "verdict": "포화"
+    },
+    {
+      "keyword": "베란다 태양광 모니터링",
+      "monthly_search": 20,
+      "blog_docs": 15,
+      "recent_30d": 0,
+      "ratio": 1.33,
+      "verdict": "희소"
+    }
+  ]
+}

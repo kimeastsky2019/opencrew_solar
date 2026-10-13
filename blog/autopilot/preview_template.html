@@ -1,0 +1,223 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발코니 태양광 발행 큐</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Gothic+A1:wght@800&display=swap">
+<style>
+/* Layout: 왼쪽 글 목록 레일 + 오른쪽 원고 미리보기(블로그 폭). 모바일에선 목록이 위로 접힘. */
+:root {
+  --bg: #f3f5f7; --surface: #ffffff; --ink: #17212b; --muted: #5d6b78; --line: #d9e0e6;
+  --cell: #1f4e79;        /* PV 셀 블루 — 주 강조 */
+  --cell-soft: #e3edf6;
+  --sun: #b7791f;         /* 일사 앰버 — 사진 자리 표시 */
+  --sun-soft: #fbf1df;
+  --ok: #1d7a46; --ok-soft: #e1f3e8; --warn: #a15c07; --warn-soft: #fcefd9; --bad: #b42318; --bad-soft: #fde7e5; --idle: #6b7785; --idle-soft: #eceff2;
+  --f-display: "Gothic A1", "IBM Plex Sans KR", "Apple SD Gothic Neo", sans-serif;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1419; --surface: #172029; --ink: #e6ecf1; --muted: #93a2b0; --line: #2a3644;
+  --cell: #7fb2e5; --cell-soft: #1b2d40; --sun: #e3a94a; --sun-soft: #2e2416;
+  --ok: #5cc98a; --ok-soft: #15301f; --warn: #e8a54a; --warn-soft: #33250f; --bad: #f2877c; --bad-soft: #3a1a17; --idle: #9aa6b2; --idle-soft: #232d38;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1419; --surface: #172029; --ink: #e6ecf1; --muted: #93a2b0; --line: #2a3644;
+  --cell: #7fb2e5; --cell-soft: #1b2d40; --sun: #e3a94a; --sun-soft: #2e2416;
+  --ok: #5cc98a; --ok-soft: #15301f; --warn: #e8a54a; --warn-soft: #33250f; --bad: #f2877c; --bad-soft: #3a1a17; --idle: #9aa6b2; --idle-soft: #232d38;
+  color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.7 var(--f-body); word-break: keep-all; overflow-wrap: anywhere; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 24px 64px; display: grid; gap: 20px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+h1 { font: 800 26px/1.2 var(--f-display); margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.sub { color: var(--muted); margin: 4px 0 0; font-size: 14px; }
+.tabs { display: flex; gap: 4px; background: var(--idle-soft); padding: 4px; border-radius: 8px; }
+.tabs button { border: 0; background: transparent; color: var(--muted); font: 500 14px var(--f-body); padding: 6px 14px; border-radius: 6px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
+.mock { background: var(--warn-soft); color: var(--warn); border-radius: 6px; padding: 8px 12px; font-size: 13px; }
+.layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start; }
+.rail { display: grid; gap: 2px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); max-height: calc(100vh - 24px); overflow: auto; }
+.rail button { text-align: left; border: 0; background: transparent; color: var(--ink); padding: 10px 12px; border-radius: 8px; cursor: pointer; display: grid; gap: 2px; font: inherit; }
+.rail button:hover { background: var(--idle-soft); }
+.rail button[aria-current="true"] { background: var(--cell-soft); }
+.rail .t { font-weight: 500; font-size: 14px; line-height: 1.45; }
+.rail .m { display: flex; gap: 8px; align-items: center; font: 12px var(--f-mono); color: var(--muted); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex: none; }
+.dot.warn { background: var(--warn); } .dot.done { background: var(--idle); }
+.paper { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; min-width: 0; }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.bar .sp { flex: 1; }
+.btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 500 13px var(--f-body); padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+.btn.primary { background: var(--cell); border-color: var(--cell); color: var(--surface); }
+.btn:focus-visible, .rail button:focus-visible, .tabs button:focus-visible { outline: 2px solid var(--cell); outline-offset: 2px; }
+.check { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }
+.kw { padding: 14px 16px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { color: var(--muted); font-weight: 500; font-size: 12px; }
+td.n { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+th.n { text-align: right; }
+.chip { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 500; }
+.v-최적, .v-가능 { background: var(--ok-soft); color: var(--ok); }
+.v-어려움 { background: var(--warn-soft); color: var(--warn); }
+.v-벽, .v-과열, .v-포화 { background: var(--bad-soft); color: var(--bad); }
+.v-희소, .v-미측정 { background: var(--idle-soft); color: var(--idle); }
+.role { font: 500 11px var(--f-mono); color: var(--cell); letter-spacing: .04em; }
+.issues { padding: 10px 16px; background: var(--warn-soft); color: var(--warn); font-size: 13px; border-bottom: 1px solid var(--line); }
+article { padding: 28px 24px 36px; max-width: 720px; margin: 0 auto; }
+article h2 { font: 800 25px/1.35 var(--f-display); margin: 0 0 6px; text-wrap: balance; }
+article .subtitle { color: var(--muted); margin: 0 0 22px; }
+article h3 { font-size: 18px; margin: 30px 0 10px; line-height: 1.45; text-wrap: balance; }
+article p { margin: 0 0 12px; max-width: 65ch; }
+.ph { border: 1.5px dashed var(--sun); background: var(--sun-soft); color: var(--sun); border-radius: 8px; padding: 18px 14px; font-size: 13px; margin: 0 0 14px; display: flex; gap: 8px; align-items: baseline; }
+.ph b { font-family: var(--f-mono); font-weight: 500; flex: none; }
+mark { background: var(--cell-soft); color: var(--cell); padding: 0 2px; border-radius: 3px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; }
+.tags span { font-size: 13px; color: var(--cell); }
+.src { margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: grid; gap: 4px; }
+.src a { color: var(--cell); word-break: break-all; }
+.research { padding: 16px; overflow-x: auto; }
+.toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 16px; border-radius: 8px; font-size: 14px; }
+@media (max-width: 860px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: static; max-height: 260px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 4px; }
+  article { padding: 20px 16px 28px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1 id="h">발코니 태양광 발행 큐</h1>
+      <p class="sub" id="summary"></p>
+    </div>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-posts" aria-selected="true">원고</button>
+      <button role="tab" id="tab-research" aria-selected="false">키워드 조사</button>
+    </div>
+  </header>
+  <div class="mock" id="mock" hidden></div>
+  <section id="view-posts" class="layout">
+    <nav class="rail" id="rail" aria-label="원고 목록"></nav>
+    <div class="paper" id="paper"></div>
+  </section>
+  <section id="view-research" class="paper" hidden><div class="research" id="research"></div></section>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = (n) => n == null ? "–" : Number(n).toLocaleString("ko-KR");
+let done = {};
+try { done = JSON.parse(localStorage.getItem("published") || "{}"); } catch (e) {}
+const saveDone = () => { try { localStorage.setItem("published", JSON.stringify(done)); } catch (e) {} };
+let current = 0;
+
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(t._x); t._x = setTimeout(() => t.hidden = true, 1600); }
+
+async function copy(text, htmlText) {
+  try {
+    if (htmlText && window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({
+        "text/html": new Blob([htmlText], {type: "text/html"}),
+        "text/plain": new Blob([text], {type: "text/plain"})})]);
+    } else { await navigator.clipboard.writeText(text); }
+    toast("복사했어요");
+  } catch (e) {
+    const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); toast("복사했어요"); } catch (_) { toast("복사가 막혔어요. 본문을 직접 선택해 복사하세요"); }
+    ta.remove();
+  }
+}
+
+function highlight(text, kws) {
+  let out = esc(text);
+  kws.filter(Boolean).sort((a, b) => b.length - a.length).forEach(k => {
+    out = out.split(esc(k)).join(`<mark>${esc(k)}</mark>`);
+  });
+  return out;
+}
+
+function plain(p) {
+  const lines = [p.subtitle, "", p.intro, ""];
+  p.sections.forEach(s => { lines.push(s.heading, `[사진: ${s.photo}]`, ...s.body, ""); });
+  if (p.sources?.length) { lines.push("참고 자료"); p.sources.forEach(s => lines.push(`· ${s.title} — ${s.url}`)); }
+  return lines.join("\n");
+}
+
+function renderRail() {
+  $("#rail").innerHTML = DATA.posts.map((p, i) => {
+    const cls = done[p.slug] ? "done" : (p.issues.length ? "warn" : "");
+    return `<button data-i="${i}" aria-current="${i === current}">
+      <span class="t">${esc(p.title)}</span>
+      <span class="m"><span class="dot ${cls}"></span>${p.chars}자 · ${done[p.slug] ? "발행함" : (p.issues.length ? "확인 " + p.issues.length : "규칙 통과")}</span>
+    </button>`; }).join("");
+  $("#rail").querySelectorAll("button").forEach(b => b.onclick = () => { current = +b.dataset.i; renderRail(); renderPost(); });
+}
+
+function renderPost() {
+  const p = DATA.posts[current];
+  const kws = [p.main, ...p.subs];
+  const ev = p.evidence || [];
+  const rows = kws.map((k, i) => {
+    const r = ev.find(e => e.keyword.replace(/\s/g, "") === k.replace(/\s/g, "")) || {};
+    const v = r.verdict || "미측정";
+    return `<tr><td><span class="role">${i === 0 ? "메인 → 제목" : "서브 → 소제목 " + i}</span></td><td>${esc(k)}</td>
+      <td class="n">${fmt(r.monthly_search)}</td><td class="n">${fmt(r.blog_docs)}</td><td class="n">${r.ratio ?? "–"}</td>
+      <td><span class="chip v-${v}">${v}</span></td></tr>`; }).join("");
+  $("#paper").innerHTML = `
+    <div class="bar">
+      <button class="btn" id="c-title">제목 복사</button>
+      <button class="btn primary" id="c-body">본문 복사</button>
+      <button class="btn" id="c-tags">태그 복사</button>
+      <span class="sp"></span>
+      <label class="check"><input type="checkbox" id="c-done" ${done[p.slug] ? "checked" : ""}> 비공개 발행 완료</label>
+    </div>
+    <div class="kw"><table><thead><tr><th>배치</th><th>키워드</th><th class="n">월간 검색</th><th class="n">블로그 문서</th><th class="n">비율</th><th>판정</th></tr></thead><tbody>${rows}</tbody></table></div>
+    ${p.issues.length ? `<div class="issues">${p.issues.map(esc).join("<br>")}</div>` : ""}
+    <article>
+      <h2>${highlight(p.title, [p.main])}</h2>
+      <p class="subtitle">${esc(p.subtitle)}</p>
+      ${p.intro.split("\n").filter(Boolean).map(t => `<p>${highlight(t, kws)}</p>`).join("")}
+      ${p.sections.map(s => `
+        <h3>${highlight(s.heading, kws)}</h3>
+        <div class="ph"><b>사진</b><span>${esc(s.photo)}</span></div>
+        ${s.body.map(t => `<p>${highlight(t, kws)}</p>`).join("")}`).join("")}
+      <div class="tags">${(p.tags || []).map(t => `<span>#${esc(t.replace(/\s/g, ""))}</span>`).join("")}</div>
+      ${p.sources?.length ? `<div class="src"><span>참고 자료</span>${p.sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join("")}</div>` : ""}
+    </article>`;
+  $("#c-title").onclick = () => copy(p.title);
+  $("#c-body").onclick = () => copy(plain(p), p.naver_html);
+  $("#c-tags").onclick = () => copy((p.tags || []).map(t => "#" + t.replace(/\s/g, "")).join(" "));
+  $("#c-done").onchange = (e) => { done[p.slug] = e.target.checked; saveDone(); renderRail(); };
+}
+
+function renderResearch() {
+  const rows = DATA.research || [];
+  if (!rows.length) { $("#research").innerHTML = `<p class="sub">이 묶음에는 조사 기록이 없어요. <code>python -m autopilot.cli research --seed "발코니 태양광"</code>을 실행하면 월간 검색·문서 수·판정이 여기에 채워집니다.</p>`; return; }
+  $("#research").innerHTML = `<p class="sub">측정일 ${esc(DATA.measured_on || "")} · 비율 = 월간 검색 ÷ 블로그 문서 (높을수록 찾는 사람에 비해 쓴 글이 적음)</p>
+   <table><thead><tr><th>키워드</th><th class="n">월간 검색</th><th class="n">블로그 문서</th><th class="n">최근 30일</th><th class="n">비율</th><th>판정</th></tr></thead><tbody>
+   ${rows.map(r => `<tr><td>${esc(r.keyword)}</td><td class="n">${fmt(r.monthly_search)}</td><td class="n">${fmt(r.blog_docs)}</td><td class="n">${fmt(r.recent_30d)}</td><td class="n">${r.ratio ?? "–"}</td><td><span class="chip v-${r.verdict}">${r.verdict}</span></td></tr>`).join("")}
+   </tbody></table>`;
+}
+
+function tab(which) {
+  const posts = which === "posts";
+  $("#tab-posts").setAttribute("aria-selected", posts); $("#tab-research").setAttribute("aria-selected", !posts);
+  $("#view-posts").hidden = !posts; $("#view-research").hidden = posts;
+}
+$("#tab-posts").onclick = () => tab("posts");
+$("#tab-research").onclick = () => tab("research");
+
+const passed = DATA.posts.filter(p => !p.issues.length).length;
+$("#summary").textContent = `원고 ${DATA.posts.length}편 · 규칙 통과 ${passed}편 · 제목 앞 메인 키워드, 소제목 1~3 서브 키워드, 마무리 무키워드, 공백 포함 800~1,200자`;
+if (DATA.mock) { $("#mock").hidden = false; $("#mock").textContent = "예시 데이터입니다. 월간 검색·문서 수는 실제 측정값이 아니며, 네이버 API 키를 넣고 다시 실행하면 실측값으로 바뀝니다."; }
+else if (!DATA.research.length) { $("#mock").hidden = false; $("#mock").textContent = "키워드 세트는 후보입니다. 검색량·문서 수는 아직 측정 전이라 판정이 '미측정'으로 표시됩니다."; }
+renderRail(); renderPost(); renderResearch();
+</script>
